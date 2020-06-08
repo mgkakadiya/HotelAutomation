@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+
+	<changeSet id="1" author="maulik.kakadiya">
+
+		<createTable tableName="hotel">
+			<column name="id" type="bigint"
+				autoIncrement="${autoIncrement}">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="power_consume" type="bigint" />
+			<column name="max_power_consume" type="bigint" />
+		</createTable>
+
+		<createTable tableName="floor">
+			<column name="id" type="bigint"
+				autoIncrement="${autoIncrement}">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="hotel_id" type="bigint">
+				<constraints nullable="false"
+					foreignKeyName="fk_hotel_id_floor" references="hotel(id)" />
+			</column>
+		</createTable>
+
+		<createTable tableName="main_corridor">
+			<column name="id" type="bigint"
+				autoIncrement="${autoIncrement}">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="floor_id" type="bigint">
+				<constraints nullable="false"
+					foreignKeyName="fk_floor_id_main_corridor" references="floor(id)" />
+			</column>
+		</createTable>
+
+		<createTable tableName="sub_corridor">
+			<column name="id" type="bigint"
+				autoIncrement="${autoIncrement}">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="floor_id" type="bigint">
+				<constraints nullable="false"
+					foreignKeyName="fk_floor_id_sub_corridor" references="floor(id)" />
+			</column>
+		</createTable>
+
+		<createTable tableName="air_conditioner">
+			<column name="id" type="bigint"
+				autoIncrement="${autoIncrement}">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="power_consume" type="bigint" />
+			<column name="status" type="varchar(56)" />
+			<column name="sub_corridor_id" type="bigint">
+				<constraints nullable="true"
+					foreignKeyName="fk_sub_corridor_id_air_conditioner"
+					references="sub_corridor(id)" />
+			</column>
+			<column name="main_corridor_id" type="bigint">
+				<constraints nullable="true"
+					foreignKeyName="fk_main_corridor_id_air_conditioner"
+					references="main_corridor(id)" />
+			</column>
+		</createTable>
+
+		<createTable tableName="light">
+			<column name="id" type="bigint"
+				autoIncrement="${autoIncrement}">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="power_consume" type="bigint">
+			</column>
+			<column name="status" type="varchar(56)" />
+			<column name="sub_corridor_id" type="bigint">
+				<constraints nullable="true"
+					foreignKeyName="fk_sub_corridor_id_light"
+					references="sub_corridor(id)" />
+			</column>
+			<column name="main_corridor_id" type="bigint">
+				<constraints nullable="true"
+					foreignKeyName="fk_main_corridor_id_light"
+					references="main_corridor(id)" />
+			</column>
+		</createTable>
+
+	</changeSet>
+	
+	<changeSet id="2" author="maulik.kakadiya">
+		<insert tableName="hotel">
+			<column name="id" valueNumeric="1" />
+		</insert>
+	</changeSet>
+
+	<changeSet id="3" author="maulik.kakadiya">
+		<insert tableName="floor">
+			<column name="id" valueNumeric="1" />
+			<column name="hotel_id" valueNumeric="1" />
+		</insert>
+		<insert tableName="floor">
+			<column name="id" valueNumeric="2" />
+			<column name="hotel_id" valueNumeric="1" />
+		</insert>
+	</changeSet>
+
+	<changeSet id="4" author="maulik.kakadiya">
+		<insert tableName="main_corridor">
+			<column name="id" valueNumeric="1" />
+			<column name="floor_id" valueNumeric="1" />
+		</insert>
+		<insert tableName="main_corridor">
+			<column name="id" valueNumeric="2" />
+			<column name="floor_id" valueNumeric="2" />
+		</insert>
+	</changeSet>
+
+	<changeSet id="5" author="maulik.kakadiya">
+		<insert tableName="air_conditioner">
+			<column name="id" valueNumeric="1" />
+			<column name="power_consume" valueNumeric="10" />
+			<column name="status" value="OFF" />
+			<column name="main_corridor_id" valueNumeric="1" />
+		</insert>
+		<insert tableName="air_conditioner">
+			<column name="id" valueNumeric="2" />
+			<column name="power_consume" valueNumeric="10" />
+			<column name="status" value="OFF" />
+			<column name="main_corridor_id" valueNumeric="2" />
+		</insert>
+		<insert tableName="light">
+			<column name="id" valueNumeric="1" />
+			<column name="power_consume" valueNumeric="5" />
+			<column name="status" value="OFF" />
+			<column name="main_corridor_id" valueNumeric="1" />
+		</insert>
+		<insert tableName="light">
+			<column name="id" valueNumeric="2" />
+			<column name="power_consume" valueNumeric="5" />
+			<column name="status" value="OFF" />
+			<column name="main_corridor_id" valueNumeric="2" />
+		</insert>
+	</changeSet>
+
+	<changeSet id="6" author="maulik.kakadiya">
+		<insert tableName="sub_corridor">
+			<column name="id" valueNumeric="1" />
+			<column name="floor_id" valueNumeric="1" />
+		</insert>
+		<insert tableName="sub_corridor">
+			<column name="id" valueNumeric="2" />
+			<column name="floor_id" valueNumeric="1" />
+		</insert>
+		<insert tableName="sub_corridor">
+			<column name="id" valueNumeric="3" />
+			<column name="floor_id" valueNumeric="2" />
+		</insert>
+		<insert tableName="sub_corridor">
+			<column name="id" valueNumeric="4" />
+			<column name="floor_id" valueNumeric="2" />
+		</insert>
+	</changeSet>
+
+	<changeSet id="7" author="maulik.kakadiya">
+		<insert tableName="air_conditioner">
+			<column name="id" valueNumeric="3" />
+			<column name="power_consume" valueNumeric="10" />
+			<column name="status" value="OFF" />
+			<column name="sub_corridor_id" valueNumeric="1" />
+		</insert>
+
+		<insert tableName="light">
+			<column name="id" valueNumeric="3" />
+			<column name="power_consume" valueNumeric="5" />
+			<column name="status" value="OFF" />
+			<column name="sub_corridor_id" valueNumeric="1" />
+		</insert>
+
+		<insert tableName="air_conditioner">
+			<column name="id" valueNumeric="4" />
+			<column name="power_consume" valueNumeric="10" />
+			<column name="status" value="OFF" />
+			<column name="sub_corridor_id" valueNumeric="2" />
+		</insert>
+
+		<insert tableName="light">
+			<column name="id" valueNumeric="4" />
+			<column name="power_consume" valueNumeric="5" />
+			<column name="status" value="OFF" />
+			<column name="sub_corridor_id" valueNumeric="2" />
+		</insert>
+
+		<insert tableName="air_conditioner">
+			<column name="id" valueNumeric="5" />
+			<column name="power_consume" valueNumeric="10" />
+			<column name="status" value="OFF" />
+			<column name="sub_corridor_id" valueNumeric="3" />
+		</insert>
+
+		<insert tableName="light">
+			<column name="id" valueNumeric="5" />
+			<column name="power_consume" valueNumeric="5" />
+			<column name="status" value="OFF" />
+			<column name="sub_corridor_id" valueNumeric="3" />
+		</insert>
+
+		<insert tableName="air_conditioner">
+			<column name="id" valueNumeric="6" />
+			<column name="power_consume" valueNumeric="10" />
+			<column name="status" value="OFF" />
+			<column name="sub_corridor_id" valueNumeric="4" />
+		</insert>
+
+		<insert tableName="light">
+			<column name="id" valueNumeric="6" />
+			<column name="power_consume" valueNumeric="5" />
+			<column name="status" value="OFF" />
+			<column name="sub_corridor_id" valueNumeric="4" />
+		</insert>
+	</changeSet>
+	
+</databaseChangeLog>
